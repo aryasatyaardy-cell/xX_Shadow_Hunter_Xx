@@ -1,8 +1,8 @@
 #include "Mic.h"
 
-#define I2S_SD   11
-#define I2S_SCK  12
-#define I2S_WS   13
+#define I2S_SD   11 //Data
+#define I2S_SCK  12 //Clock
+#define I2S_WS   13 //Left/right
 
 #define I2S_INMP441 I2S_NUM_0
 
@@ -28,6 +28,12 @@ int Mic_Data() {
   if (count > 0) {
   db = (sum / count);
   return db;
+  }
+
+  if (db > 100) {
+    server.on("/LoudNoise", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(200, "text/plain", "Loud sound detected nearby");
+    });
   }
 
   return 0;

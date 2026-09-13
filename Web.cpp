@@ -30,7 +30,9 @@ void Web() {
     String html = R"rawliteral(
 <!DOCTYPE html>
 <html>
+
 <head>
+    
     <title>ESP32 Graph</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
@@ -39,21 +41,25 @@ void Web() {
             width: 500px;
             height: 400px;
             margin: 0 auto;
-            background-color: #f0f0f0;
+            background-color: #111111;
         }
+
         .SoundGraph h1 {
             text-align: center;
         }
+
         .SoundGraph canvas {
             text-align: center;
             padding-bottom: 100px;
             width: 1000px;
         }
+
         .INMP_Button {
             text-align: center;
             margin-top: auto;
             background-color: #ff9d9d;
         }
+
         .btn {
             padding: 12px 24px;
             font-size: 16px;
@@ -63,12 +69,15 @@ void Web() {
             border-radius: 5px;
             color: white;
         }
+
         .btn.off {
             background-color: #e74c3c;
         }
+
         .btn.on {
             background-color: #2ecc71;
         }
+
         .log {
             display: flex;
             flex-direction: column;
@@ -81,6 +90,7 @@ void Web() {
             padding-right: 10px;
             margin: 20px auto;
         }
+
         #log {
             width: 400px;
             height: 260px;
@@ -94,15 +104,18 @@ void Web() {
             font-size: 13px;
             text-align: left;
         }
+
         #log h1 {
             font-size: 15px;
             text-align: center;
         }
+
         #log div {
             margin-bottom: 8px;
         }
     </style>
 </head>
+
 <body>
     <div class="SoundGraph">
         <h1>Sound Detector</h1>
@@ -119,6 +132,7 @@ void Web() {
         <div id="log"></div>
     </div>
 
+
     <script>
 
         let micState = false;
@@ -133,6 +147,14 @@ void Web() {
             updateButton(micState);
         }
 
+        async function LoudNoise() {
+
+            const res = await fetch(/LoudNoise);
+            const text = await res.text();
+            logMessage(text);
+
+        }
+
         function updateButton(isOn) {
             const btn = document.getElementById("micBtn");
             btn.textContent = isOn ? "ON" : "OFF";
@@ -140,6 +162,7 @@ void Web() {
         }
 
         const I2S_Graph = document.getElementById('I2S_Chart').getContext('2d');
+
         const chart = new Chart(I2S_Graph, {
             type: 'line',
             data: {
@@ -148,7 +171,7 @@ void Web() {
                     label: 'Sound',
                     data: [],
                     borderWidth: 2,
-                    borderColor: 'blue',
+                    borderColor: 'white',
                     fill: false,
                     pointRadius: 0
                 }]
@@ -156,19 +179,46 @@ void Web() {
             options: {
                 animation: false,
                 scales: {
-                    y: { min: -200, max: 200 }
+                    y: {
+                        min: -200,
+                        max: 200,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'  // faint grid lines
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
                 }
             }
         });
 
         let I2S_Counter = 0;
-
         let zeroCount = 0;
 
-async function fetchData() {
-    if (!micState) {
-        if (zeroCount < 50) {
-            const value = 0;
+        async function fetchData() {
+            if (!micState) {
+                if (zeroCount < 50) {
+                    const value = 0;
+                    chart.data.labels.push(I2S_Counter++);
+                    chart.data.datasets[0].data.push(parseFloat(value));
+                    if (chart.data.labels.length > 50) {
+                        chart.data.labels.shift();
+                        chart.data.datasets[0].data.shift();
+                    }
+                    chart.update();
+                    zeroCount++;
+                }
+                return;
+            }
+
+            zeroCount = 0;  // reset so next time it's turned off, it fills again
+
+            const response = await fetch('/I2S_Data');
+            const value = await response.text();
+
             chart.data.labels.push(I2S_Counter++);
             chart.data.datasets[0].data.push(parseFloat(value));
             if (chart.data.labels.length > 50) {
@@ -176,23 +226,7 @@ async function fetchData() {
                 chart.data.datasets[0].data.shift();
             }
             chart.update();
-            zeroCount++;
         }
-        return;
-    }
-
-    zeroCount = 0;  // reset so next time it's turned off, it fills again
-
-    const response = await fetch('/I2S_Data');
-    const value = await response.text();
-    chart.data.labels.push(I2S_Counter++);
-    chart.data.datasets[0].data.push(parseFloat(value));
-    if (chart.data.labels.length > 50) {
-        chart.data.labels.shift();
-        chart.data.datasets[0].data.shift();
-    }
-    chart.update();
-}
 
         function logMessage(message) {
             const logDiv = document.getElementById("log");
@@ -208,6 +242,7 @@ async function fetchData() {
         setInterval(fetchData, 50);
     </script>
 </body>
+
 </html>
 )rawliteral";
 

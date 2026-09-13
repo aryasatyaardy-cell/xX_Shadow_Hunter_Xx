@@ -17,9 +17,9 @@ void INMP441On() {
 
 void INMP441Off() {
   server.on("/StateOff", HTTP_GET, [](AsyncWebServerRequest *request) {
-    digitalWrite(INMP441, LOW);
-    State15 = false;
-    request->send(200, "text/plain", "Disabling sound detector");
+  digitalWrite(INMP441, LOW);
+  State15 = false;
+  request->send(200, "text/plain", "Disabling sound detector");
 
   led.setBrightness(20);
   led.setPixelColor(0, led.Color(0, 255, 255));
