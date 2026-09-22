@@ -1,0 +1,9 @@
+Item,Quantity,Part number,Description
+1,1,Body V3.5,Base plate of the body
+2,4,Shoulder V1.4,Shoulder joint to attach servo on XY axis and offsetting it
+3,13,Micro servo,Servos placeholder
+4,4,Calf V2.1,Leg part that touch/in contact with the ground
+5,8,Thigh V1.3,To connect the shoulder joint with the leg
+6,12,Hex V1.2,Custom made hex so I can glue it easily
+7,1,Head V1.2,"Top part of the body, made withwind direction for camera development in the future"
+8,4,Neck V1.1,to secure the top and bottom part of the body
