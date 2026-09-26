@@ -66,6 +66,6 @@ Each legs are driven with 3 lots of **sg90 all metal 180° micro servo** and con
 - Temperature and humidity sensor is DHT22
 - Vibration sensor is GY-BMI160 IMU 6DOF Gyroscope Accelerometer
 - Air quality sensor is MQ-135
-- Sound sensor (is actually a speaker but I've got not much time to configure it that way so I just use it to gather the presence of loud noise) is INMP441 omnidirectional microphone
+- Sound sensor (is actually a microphone but I've got not much time to configure it that way so I just use it to gather the presence of loud noise) is INMP441 omnidirectional microphone
 
 xX_Shadow_Hunter_Xx™ © 2026 Aryasatya Mahdiya Ardy — Open-source and free to use, modify, and redistribute with attribution required; commercial use is prohibited without prior written permission.
