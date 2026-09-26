@@ -44,11 +44,16 @@ _ Sound
 
 ```Web.js``` to give the website some intellect (such as letting it communicate with Shadow Hunter)
 
+**Website try-out**
+https://shadowhunterdataviewer.netlify.app/
+
+N.B. upon pressing buttons, error message is expected to be appeared in the log window as this website is designed to be connected to xX_Shadow_Hunter_Xx
+
 ### xX_Shadow_Hunter_Xx
 
 ```xX_Shadow_Hunter_Xx.ino``` is the main arduino sketch
 
-note: this part (the arduinos) aren't finish so I won't be wasting my time in writing the readmes
+N.B. this part (the arduinos) aren't finish so I won't be wasting my time in writing the readmes
 
 ## Hardwares
 ### Brain
@@ -60,3 +65,5 @@ Each legs are driven with 3 lots of **sg90 all metal 180° micro servo** and con
 - Vibration sensor is GY-BMI160 IMU 6DOF Gyroscope Accelerometer
 - Air quality sensor is MQ-135
 - Sound sensor (is actually a speaker but I've got not much time to configure it that way so I just use it to gather the presence of loud noise) is INMP441 omnidirectional microphone
+
+xX_Shadow_Hunter_Xx™ © 2026 Aryasatya Mahdiya Ardy — Open-source and free to use, modify, and redistribute with attribution required; commercial use is prohibited without prior written permission.
