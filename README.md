@@ -56,6 +56,8 @@ N.B. upon pressing buttons, error message is expected to be appeared in the log 
 N.B. this part (the arduinos) aren't finish so I won't be wasting my time in writing the readmes
 
 ## Hardwares
+N.B. all of Shadow Hunter's body part is free to print and assess, I have include its stl .zip file in this repo, just use the latest one if you want to print your very own personal Shadow Hunter
+
 ### Brain
 Shadow Hunter main controller is the **ESP32 S3 DevKitC-1 N8R2 N16R8** microcontroller
 ### Legs
