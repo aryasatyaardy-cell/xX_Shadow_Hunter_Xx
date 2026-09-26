@@ -7,11 +7,11 @@ Shadow Hunter is a four-legged data collecting robot made for an IoT competition
 This robot is aimed to aid rescue worker passively by providing infield-real-time data in the background, its purpose is not to be seen, but rather to venture to areas that are hard/dangerous to approach
 
 ## Feautres
--   **Quadruped Locomotion**
+### Quadruped Locomotion
 
 Provided with 4 legs, Shadow Hunter is designed to be able to relocate across rough terrains after an earthquake struck, the quadruped approach is to give Asta (the maker of this project) a room to expand this feature further in the future by giving it a self auto levelling or implementing manuver system in rougher terrains such us climbing slopes
 
-- **Modes of Operations**
+### Modes of Operations
 
 There are 3 modes implemented in Shadow Hunter's system
 
@@ -21,9 +21,42 @@ There are 3 modes implemented in Shadow Hunter's system
 
 **Standby** is the deffault data collecting mode where it reposition its leg to be half folded, using its wider foot surface to be harder to knocked over and is planned to be self-levelling above sloped ground
 
+### Sensors
+- Temperature
+- Humidity
+- Vibration
+- Air quality
+_ Sound
+
 ## Implemented Concept
 - **IoT** or best known as Internet of Things is where hardwares can communicate with each others wirelessly without the help of human configuration during practice
 - **Real-time monitoring** is implemented to fulfill Shadow Hunter's purpose in gathering onfield datas and sharing it to the operator in an instant
 - **Adaptive power management** which is one of the core concept in my initial idea, as post-disastourus area commonly have limited power supply, Shadow Hunter are designed to effectively use the available power by activating functions which are needed
 - **Modular architecture** started taken into account as I'm a forgetful person, and by having the system separated per-function, I can remember and debug it easier in the future
 - **Quadruped movement** are made as Shadow Hunter's main mode of locomotion because post-earthquake terrains are known to get rough
+
+## Repository Structure
+### Website Control Panel
+
+```Web.html``` is the main website structure
+
+```Web.css``` is the ```Web.html``` styling
+
+```Wen.js``` to give the website some intellect (such as letting it communicate with Shadow Hunter)
+
+### xX_Shadow_Hunter_Xx
+
+```xX_Shadow_Hunter_Xx.ino``` is the main arduino sketch
+
+note: this part (the arduinos) aren't finish so I won't be wasting my time in writing the readmes
+
+## Hardwares
+### Brain
+Shadow Hunter main controller is the **ESP32 S3 DevKitC-1 N8R2 N16R8** microcontroller
+### Legs
+Each legs are driven with 3 lots of **sg90 all metal 180° micro servo** and connected to **pca9685** servo driver which then connected to esp32
+### Sensors
+- Temperature and humidity sensor is DHT22
+- Vibration sensor is GY-BMI160 IMU 6DOF Gyroscope Accelerometer
+- Air quality sensor is MQ-135
+- Sound sensor (is actually a speaker but I've got not much time to configure it that way so I just use it to gather the presence of loud noise) is INMP441 omnidirectional microphone
