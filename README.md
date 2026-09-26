@@ -42,7 +42,7 @@ _ Sound
 
 ```Web.css``` is the ```Web.html``` styling
 
-```Wen.js``` to give the website some intellect (such as letting it communicate with Shadow Hunter)
+```Web.js``` to give the website some intellect (such as letting it communicate with Shadow Hunter)
 
 ### xX_Shadow_Hunter_Xx
 
