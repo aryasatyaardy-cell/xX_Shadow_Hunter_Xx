@@ -1,5 +1,7 @@
 #include "Web.h"
-#include <LittleFS.h>
+#include "index_html.h"
+#include "Web_css.h"
+#include "Web_js.h"
 
 void InitateWifi() {
 
@@ -27,21 +29,22 @@ void InitateWifi() {
 }
 
 void Web() {
-  // Make sure LittleFS is mounted once (safe to call again if already mounted elsewhere)
-  if (!LittleFS.begin()) {
-    Serial.println("LittleFS mount failed - upload Web.html, Web.css, Web.js to the filesystem image");
-  }
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/html", INDEX_HTML);
+  });
 
-  // Serve the three files straight off flash. serveStatic sets the right
-  // Content-Type automatically based on the file extension.
-  server.serveStatic("/", LittleFS, "/Web.html").setDefaultFile("Web.html");
-  server.serveStatic("/Web.css", LittleFS, "/Web.css");
-  server.serveStatic("/Web.js", LittleFS, "/Web.js");
-}
+  server.on("/Web.css", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/css", WEB_CSS);
+  });
 
-void INMP441_Data() {
-  server.on("/I2S_Data", HTTP_GET, [](AsyncWebServerRequest *request){
-    int value = Mic_Data();
-    request->send(200, "text/plain", String(value));
+  server.on("/Web.js", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "application/javascript", WEB_JS);
   });
 }
+
+//void INMP441_Data() {
+//  server.on("/I2S_Data", HTTP_GET, [](AsyncWebServerRequest *request) {
+    //int value = Mic_Data();
+    //request->send(200, "text/plain", String(value));
+//  });
+//}

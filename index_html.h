@@ -1,0 +1,129 @@
+#ifndef INDEX_HTML_H
+#define INDEX_HTML_H
+
+const char INDEX_HTML[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xX_Shadow_Hunter_Xx</title>
+  <link rel="stylesheet" href="Web.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="Web.js"></script>
+</head>
+
+<body>
+  <div class="LogDiv">
+    <h1>xX_Shadow_Hunter_Xx</h1>
+
+    <div class="LogIn">
+      <div class="ControlTittle">
+        <h1>Controll Key</h1>
+      </div>
+
+      <div class="LogTittle">
+        <h1>Shadow Hunter's Logbook</h1>
+      </div>
+
+    </div>
+
+    <div class="LogIn">
+
+      <div class="Control">
+        <h1><span class="UnderlineBold">Movement Keybind</span></h1>
+        <h1><span class="Bold">W</span>: Forward</h1>
+        <h1><span class="Bold">A</span>: Left</h1>
+        <h1><span class="Bold">S</span>: Backwards</h1>
+        <h1><span class="Bold">D</span>: Right</h1>
+        <h2></h2>
+        <h1><span class="Bold">Q</span>: Turn left</h1>
+        <h1><span class="Bold">E</span>: Turn right</h1>
+      </div>
+
+      <div class="Log" id="log">
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <div class="Graphs">
+
+    <div class="GraphDiv">
+
+      <h1>Temperature Sensor</h1>
+
+      <canvas id="Temperature_Chart">
+
+      </canvas>
+
+      <button id="TemperatureButton" class="TemperatureButtonOff" onclick="ToggleTemperature()">OFF</button>
+
+    </div>
+
+    <div class="GraphDiv">
+
+      <h1>Vibration Sensor</h1>
+
+      <canvas id="Vibration_Chart"></canvas>
+
+      <button id="VibrationButton" class="VibrationButtonOff" onclick="ToggleVibration()">OFF</button>
+
+    </div>
+
+    <div class="GraphDiv">
+
+      <h1>Air Quality Sensor</h1>
+
+      <canvas id="Air_Chart"></canvas>
+
+      <button id="AirButton" class="AirButtonOff" onclick="ToggleAir()">OFF</button>
+
+    </div>
+
+    <div class="GraphDiv LastBorder">
+
+      <h1>Sound Sensor</h1>
+
+      <canvas id="Sound_Chart"></canvas>
+
+      <button id="SoundButton" class="SoundButtonOff" onclick="ToggleSound()">OFF</button>
+
+    </div>
+  </div>
+
+  <div class="LogButtons">
+    <button class="DeleteLogIn" onclick="DeleteLogLine()">
+      Delete logged report
+    </button>
+
+    <button class="DownloadLogIn" onclick="DownloadLogLine()">
+      Download logged report
+    </button>
+  </div>
+
+
+  <div class="Copyright">
+    <br></br>
+    <h1>xX_Shadow_Hunter_Xx™ © 2026 Aryasatya Mahdiya Ardy — Open-source and free to use, modify, and redistribute with
+      attribution
+      required;</h1>
+    <h1> commercial use is prohibited without prior written permission.</h1>
+  </div>
+
+</body>
+
+</html>
+)rawliteral";
+
+#endif

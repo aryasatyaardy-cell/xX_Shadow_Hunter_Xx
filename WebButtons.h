@@ -5,10 +5,27 @@
 
 extern AsyncWebServer server;
 extern Adafruit_NeoPixel led;
-extern const int INMP441;
-extern bool State15;
 
-void INMP441On();
-void INMP441Off();
+extern const int Temperature;
+extern const int Vibration;
+extern const int Air;
+extern const int Sound;
+
+extern bool StateTemperature;
+extern bool StateVibration;
+extern bool StateAir;
+extern bool StateSound;
+
+void TemperatureOn();
+void TemperatureOff();
+
+void VibrationOn();
+void VibrationOff();
+
+void AirOn();
+void AirOff();
+
+void SoundOn();
+void SoundOff();
 
 #endif

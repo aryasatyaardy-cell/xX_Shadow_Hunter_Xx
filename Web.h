@@ -10,6 +10,5 @@ extern Adafruit_NeoPixel led;
 
 void InitateWifi();
 void Web();
-void INMP441_Data();
 
 #endif
