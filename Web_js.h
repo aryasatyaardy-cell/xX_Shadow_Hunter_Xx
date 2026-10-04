@@ -94,8 +94,76 @@ function logMessage(message) {
 }
 
 $(document).ready(function () {
-
   const Temperature_Chart_Ctx = document.getElementById('Temperature_Chart').getContext('2d');
+
+  function createChart(ctx, label) {
+    return new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: label,
+          data: [],
+          borderWidth: 2,
+          borderColor: 'white',
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        animation: false,
+        scales: {
+          y: {
+            min: -20,
+            max: 50,
+            ticks: {
+    stepSize: 0.5
+  },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          },
+          x: {
+            min: 0,
+            max: 50,
+grid : {
+color:
+  'rgba(255, 255, 255, 0.1)'
+}
+          }
+        }
+      }
+    });
+  }
+
+  const TemperatureChart = createChart(Temperature_Chart_Ctx, 'Temperature');
+  let TemperatureCounter = 0;
+
+    async function FetchTemperature() {
+    if (!TemperatureState) return;
+    try {
+      const response = await fetch('/Temperature_Data');
+      const value = await response.text();
+
+      TemperatureChart.data.labels.push(TemperatureCounter);
+      TemperatureChart.data.datasets[0].data.push(parseFloat(value));
+      TemperatureCounter++;
+
+      if (TemperatureCounter > 50) {
+        TemperatureChart.options.scales.x.min = TemperatureCounter - 50;
+        TemperatureChart.options.scales.x.max = TemperatureCounter;
+      }
+
+      TemperatureChart.update();
+    } catch (err) {
+
+    }
+  }
+
+  setInterval(FetchTemperature, 200);
+
+});
+
+$(document).ready(function () {
+
   const Vibration_Chart_Ctx = document.getElementById('Vibration_Chart').getContext('2d');
   const Air_Chart_Ctx = document.getElementById('Air_Chart').getContext('2d');
   const Sound_Chart_Ctx = document.getElementById('Sound_Chart').getContext('2d');
@@ -132,36 +200,14 @@ $(document).ready(function () {
     });
   }
 
-  const TemperatureChart = createChart(Temperature_Chart_Ctx, 'Temperature');
+
   const VibrationChart = createChart(Vibration_Chart_Ctx, 'Vibration');
   const AirChart = createChart(Air_Chart_Ctx, 'Air');
   const SoundChart = createChart(Sound_Chart_Ctx, 'Sound');
 
-  let TemperatureCounter = 0;
   let VibrationCounter = 0;
   let AirCounter = 0;
   let SoundCounter = 0;
-
-  async function FetchTemperature() {
-    if (!TemperatureState) return;
-    try {
-      const response = await fetch('/Temperature_Data');
-      const value = await response.text();
-
-      TemperatureChart.data.labels.push(TemperatureCounter);
-      TemperatureChart.data.datasets[0].data.push(parseFloat(value));
-      TemperatureCounter++;
-
-      if (TemperatureCounter > 50) {
-        TemperatureChart.options.scales.x.min = TemperatureCounter - 50;
-        TemperatureChart.options.scales.x.max = TemperatureCounter;
-      }
-
-      TemperatureChart.update();
-    } catch (err) {
-
-    }
-  }
 
   async function FetchVibration() {
     if (!VibrationState) return;
@@ -226,7 +272,6 @@ $(document).ready(function () {
     }
   }
 
-  setInterval(FetchTemperature, 200);
   setInterval(FetchVibration, 200);
   setInterval(FetchAir, 200);
   setInterval(FetchSound, 20);

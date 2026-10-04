@@ -1,75 +1,83 @@
-  #include <math.h>
-  #include <WiFi.h>
-  #include <ESPAsyncWebServer.h>
-  #include <Adafruit_NeoPixel.h>
+#include <math.h>
+#include <WiFi.h>
+#include <ESPAsyncWebServer.h>
+#include <Adafruit_NeoPixel.h>
 
-  #include "Mic.h"
-  #include "Web.h"
-  #include "WebButtons.h"
 
-  const char *wifiName = "Futuristik";
-  const char *password = "H4f1dzGen";
+#include "Web.h"
+#include "WebButtons.h"
+#include "Temperature.h"
 
-  #define LED_PIN 48
-  Adafruit_NeoPixel led(1, LED_PIN, NEO_GRB + NEO_KHZ800);
+const char *wifiName = "Futuristik";
+const char *password = "H4f1dzGen";
 
-  AsyncWebServer server(80);
+#define LED_PIN 48
+Adafruit_NeoPixel led(1, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-  const int Temperature = 15;
-  const int Vibration = 15;
-  const int Air = 15;
-  const int Sound = 15;
+AsyncWebServer server(80);
 
-  bool StateTemperature = false;
-  bool StateVibration = false;
-  bool StateAir = false;
-  bool StateSound = false;
+const int Temperature = 15;
+const int Vibration = 15;
+const int Air = 15;
+const int Sound = 15;
 
-  void setup() {
-    Serial.begin(115200);
-    delay(1000);
+bool StateTemperature = false;
+bool StateVibration = false;
+bool StateAir = false;
+bool StateSound = false;
 
-    pinMode(Temperature, OUTPUT);
-    digitalWrite(Temperature, LOW);
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
 
-    pinMode(Vibration, OUTPUT);
-    digitalWrite(Vibration, LOW);
+  pinMode(Temperature, OUTPUT);
+  digitalWrite(Temperature, LOW);
 
-    pinMode(Air, OUTPUT);
-    digitalWrite(Air, LOW);
+  pinMode(Vibration, OUTPUT);
+  digitalWrite(Vibration, LOW);
 
-    pinMode(Sound, OUTPUT);
-    digitalWrite(Sound, LOW);
+  pinMode(Air, OUTPUT);
+  digitalWrite(Air, LOW);
 
-    //Web
-    InitateWifi();
-    Web();
+  pinMode(Sound, OUTPUT);
+  digitalWrite(Sound, LOW);
 
-    //buttons asking data from web
-    TemperatureOn();
-    TemperatureOff();
+  //Web
+  InitateWifi();
+  Web();
 
-    VibrationOn();
-    VibrationOff();
+  //buttons asking data from web
+  TemperatureOn();
+  TemperatureOff();
 
-    AirOn();
-    AirOff();
+  VibrationOn();
+  VibrationOff();
 
-    SoundOn();
-    SoundOff();
+  AirOn();
+  AirOff();
 
-    server.begin();
-    Serial.println("Web server started");
+  SoundOn();
+  SoundOff();
 
-    led.show();
-  }
+  server.begin();
+  Serial.println("Web server started");
 
-  void loop() {
-    //Serial.print("ymin:");
-    //Serial.print(-100);
-    //Serial.print(" ymax:");
-    //Serial.print(100);
-    //Serial.print(" mic:");
+  led.show();
 
-    delay(20);
-  }
+  //Temperature
+  TemperatureSensorInitialization();
+  SendTemperatureData();
+
+  delay(2000);
+}
+
+void loop() {
+  TemperatureReading();
+
+
+  //Serial.print("ymin:");
+  //Serial.print(-100);
+  //Serial.print(" ymax:");
+  //Serial.print(100);
+  //Serial.print(" mic:");
+}

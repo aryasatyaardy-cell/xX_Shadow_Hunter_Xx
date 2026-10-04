@@ -8,6 +8,8 @@ void TemperatureOn() {
     StateTemperature = true;
     request->send(200, "text/plain", "Detecting temperature");
 
+    Serial.println("Temperature Sensor = true");
+
     led.setBrightness(20);
     led.setPixelColor(0, led.Color(0, 148, 217));
     led.show();
@@ -22,6 +24,8 @@ void TemperatureOff() {
     digitalWrite(Temperature, LOW);
     StateTemperature = false;
     request->send(200, "text/plain", "Stop detecting temperature");
+
+    Serial.println("Temperature Sensor = false");
 
     led.setBrightness(20);
     led.setPixelColor(0, led.Color(0, 148, 217));
