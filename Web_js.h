@@ -2,6 +2,7 @@
 #define WEB_JS_H
 
 const char WEB_JS[] PROGMEM = R"rawliteral(
+
 async function LoudNoise() {
   const res = await fetch('/LoudNoise');
   const text = await res.text();
@@ -93,6 +94,8 @@ function logMessage(message) {
   logDiv.scrollTop = logDiv.scrollHeight;
 }
 
+/*******************************Temperature*********************************/
+
 $(document).ready(function () {
   const Temperature_Chart_Ctx = document.getElementById('Temperature_Chart').getContext('2d');
 
@@ -117,17 +120,17 @@ $(document).ready(function () {
             min: -20,
             max: 50,
             ticks: {
-    stepSize: 0.5
-  },
+              stepSize: 0.5
+            },
             grid: { color: 'rgba(255, 255, 255, 0.1)' }
           },
           x: {
             min: 0,
             max: 50,
-grid : {
-color:
-  'rgba(255, 255, 255, 0.1)'
-}
+            grid: {
+              color:
+                'rgba(255, 255, 255, 0.1)'
+            }
           }
         }
       }
@@ -137,7 +140,7 @@ color:
   const TemperatureChart = createChart(Temperature_Chart_Ctx, 'Temperature');
   let TemperatureCounter = 0;
 
-    async function FetchTemperature() {
+  async function FetchTemperature() {
     if (!TemperatureState) return;
     try {
       const response = await fetch('/Temperature_Data');
@@ -161,6 +164,27 @@ color:
   setInterval(FetchTemperature, 200);
 
 });
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function TemperatureUpdate() {
+  if (!TemperatureState) {
+    return;
+  }
+
+  const TemperatureDisplay = document.getElementById("TemperatureValue");
+
+  const response = await fetch('/Temperature_Data');
+  const Temperature = await response.text();
+
+  TemperatureDisplay.textContent = Temperature;
+}
+
+setInterval(TemperatureUpdate, 2000);
+
+/****************************************************************/
 
 $(document).ready(function () {
 
@@ -289,6 +313,7 @@ function DownloadLogLine() {
   a.href = "data:text/html," + encodeURIComponent(document.getElementById("log").innerHTML);
   a.click();
 }
+
 )rawliteral";
 
 #endif

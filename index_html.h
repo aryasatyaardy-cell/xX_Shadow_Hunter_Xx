@@ -2,6 +2,7 @@
 #define INDEX_HTML_H
 
 const char INDEX_HTML[] PROGMEM = R"rawliteral(
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +18,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="Web.js"></script>
+  <script src="Web.js" defer></script>
 </head>
 
 <body>
@@ -46,6 +47,11 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <h2></h2>
         <h1><span class="Bold">Q</span>: Turn left</h1>
         <h1><span class="Bold">E</span>: Turn right</h1>
+        <h2></h2>
+
+        <div class="DynamicText">
+          <h1><span class="Bold">Temperature:</span> <span id="TemperatureValue">∅</span>°C</h1>
+        </div>
       </div>
 
       <div class="Log" id="log">
@@ -124,6 +130,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 </body>
 
 </html>
+
 )rawliteral";
 
 #endif

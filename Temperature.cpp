@@ -1,6 +1,6 @@
 #include "Temperature.h"
 
-DHT TemperatureSensor(Temperature, DHT22);
+DHT TemperatureSensor(TemperatureData, DHT22);
 
 void TemperatureSensorInitialization() {
   TemperatureSensor.begin();

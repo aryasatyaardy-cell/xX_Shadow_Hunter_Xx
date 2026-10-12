@@ -4,6 +4,8 @@
 #include <DHT.h>
 
 extern const int Temperature;
+extern const int TemperatureData;
+
 extern AsyncWebServer server;
 extern bool StateTemperature;
 
