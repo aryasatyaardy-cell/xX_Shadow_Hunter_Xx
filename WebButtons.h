@@ -2,6 +2,8 @@
 #define WebButtons_H
 #include <ESPAsyncWebServer.h>
 #include <Adafruit_NeoPixel.h>
+#include "Vibration.h"
+#include "Sound.h"
 
 extern AsyncWebServer server;
 extern Adafruit_NeoPixel led;

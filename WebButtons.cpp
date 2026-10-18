@@ -41,8 +41,13 @@ void TemperatureOff() {
 void VibrationOn() {
   server.on("/VibrationStateOn", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(Vibration, HIGH);
+    delay(500);
+    VibrationSensorInitialization();
+    delay(500);
     StateVibration = true;
     request->send(200, "text/plain", "Detecting vibration");
+
+    Serial.println("Vibration Sensor = true");
 
     led.setBrightness(20);
     led.setPixelColor(0, led.Color(15, 212, 8));
@@ -58,6 +63,8 @@ void VibrationOff() {
     digitalWrite(Vibration, LOW);
     StateVibration = false;
     request->send(200, "text/plain", "Stop detecting vibration");
+
+    Serial.println("Vibration Sensor = false");
 
     led.setBrightness(20);
     led.setPixelColor(0, led.Color(15, 212, 8));
@@ -105,6 +112,9 @@ void AirOff() {
 void SoundOn() {
   server.on("/SoundStateOn", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(Sound, HIGH);
+    delay(500);
+    InitializeSound();
+    delay(500);
     StateSound = true;
     request->send(200, "text/plain", "Sound sensor up.");
 

@@ -1,23 +1,27 @@
 #include "AirQuality.h"
 
+int airValue = 0;
+
 void AirReading() {
   if (!StateAir) {
     return;
   }
 
-  int airValue = analogRead(AirData);
+  airValue = analogRead(AirData);
 
   Serial.print("Air Quality: ");
-  Serial.println(airValue);
-  delay(1000);
 
+  if (airValue <= 1000) {
+    airValue = 0;
+  }
+
+  Serial.println(airValue);
 
   delay(200);
 }
 
 void SendAirData() {
-  server.on("/Temperature_Data", HTTP_GET, [](AsyncWebServerRequest *request) {
-    float AirReading = analogRead(AirData);
-    request->send(200, "text/plain", String(AirReading));
+  server.on("/Air_Data", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "text/plain", String(airValue));
   });
 }

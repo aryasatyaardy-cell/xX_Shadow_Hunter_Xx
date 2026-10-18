@@ -18,7 +18,7 @@ void TemperatureReading() {
 
 
 
-  delay(200);
+  delay(2000);
 }
 
 void SendTemperatureData() {

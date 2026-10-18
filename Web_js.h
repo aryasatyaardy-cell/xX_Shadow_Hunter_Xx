@@ -2,6 +2,21 @@
 #define WEB_JS_H
 
 const char WEB_JS[] PROGMEM = R"rawliteral(
+  
+function SendKey(key, state) {
+  fetch(`/Key?value=${key}&state=${state}`);
+}
+
+document.addEventListener("keydown", function (event) {
+  if (event.repeat) return;
+  SendKey(event.key.toLowerCase(), 1);
+});
+
+document.addEventListener("keyup", function (event) {
+  SendKey(event.key.toLowerCase(), 0);
+});
+
+/**********************************************************************/
 
 async function LoudNoise() {
   const res = await fetch('/LoudNoise');
@@ -184,13 +199,10 @@ async function TemperatureUpdate() {
 
 setInterval(TemperatureUpdate, 2000);
 
-/****************************************************************/
+/*******************************Vibration*********************************/
 
 $(document).ready(function () {
-
   const Vibration_Chart_Ctx = document.getElementById('Vibration_Chart').getContext('2d');
-  const Air_Chart_Ctx = document.getElementById('Air_Chart').getContext('2d');
-  const Sound_Chart_Ctx = document.getElementById('Sound_Chart').getContext('2d');
 
   function createChart(ctx, label) {
     return new Chart(ctx, {
@@ -210,28 +222,25 @@ $(document).ready(function () {
         animation: false,
         scales: {
           y: {
-            min: -200,
-            max: 200,
+            min: -2500,
+            max: 1000,
             grid: { color: 'rgba(255, 255, 255, 0.1)' }
           },
           x: {
             min: 0,
             max: 50,
-            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            grid: {
+              color:
+                'rgba(255, 255, 255, 0.1)'
+            }
           }
         }
       }
     });
   }
 
-
   const VibrationChart = createChart(Vibration_Chart_Ctx, 'Vibration');
-  const AirChart = createChart(Air_Chart_Ctx, 'Air');
-  const SoundChart = createChart(Sound_Chart_Ctx, 'Sound');
-
   let VibrationCounter = 0;
-  let AirCounter = 0;
-  let SoundCounter = 0;
 
   async function FetchVibration() {
     if (!VibrationState) return;
@@ -254,6 +263,53 @@ $(document).ready(function () {
     }
   }
 
+  setInterval(FetchVibration, 200);
+
+});
+
+/*******************************Air*********************************/
+
+$(document).ready(function () {
+  const Air_Chart_Ctx = document.getElementById('Air_Chart').getContext('2d');
+
+  function createChart(ctx, label) {
+    return new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: label,
+          data: [],
+          borderWidth: 2,
+          borderColor: 'white',
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        animation: false,
+        scales: {
+          y: {
+            min: -5000,
+            max: 5000,
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          },
+          x: {
+            min: 0,
+            max: 50,
+            grid: {
+              color:
+                'rgba(255, 255, 255, 0.1)'
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const AirChart = createChart(Air_Chart_Ctx, 'Air');
+  let AirCounter = 0;
+
   async function FetchAir() {
     if (!AirState) return;
     try {
@@ -274,6 +330,53 @@ $(document).ready(function () {
 
     }
   }
+
+  setInterval(FetchAir, 200);
+
+});
+
+/*******************************Sound*********************************/
+
+$(document).ready(function () {
+  const Sound_Chart_Ctx = document.getElementById('Sound_Chart').getContext('2d');
+
+  function createChart(ctx, label) {
+    return new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: label,
+          data: [],
+          borderWidth: 2,
+          borderColor: 'white',
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        animation: false,
+        scales: {
+          y: {
+            min: -5000,
+            max: 3000,
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          },
+          x: {
+            min: 0,
+            max: 50,
+            grid: {
+              color:
+                'rgba(255, 255, 255, 0.1)'
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const SoundChart = createChart(Sound_Chart_Ctx, 'Sound');
+  let SoundCounter = 0;
 
   async function FetchSound() {
     if (!SoundState) return;
@@ -296,10 +399,11 @@ $(document).ready(function () {
     }
   }
 
-  setInterval(FetchVibration, 200);
-  setInterval(FetchAir, 200);
   setInterval(FetchSound, 20);
+
 });
+
+/****************************************************************/
 
 function DeleteLogLine() {
   $('.LogLine').remove();

@@ -5,7 +5,7 @@
 
 void InitateWifi() {
 
-  const char *wifiName = "Futuristik";
+  const char *wifiName = "FuturistikBarat";
   const char *password = "H4f1dzGen";
 
   WiFi.begin(wifiName, password);

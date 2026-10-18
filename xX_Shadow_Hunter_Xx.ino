@@ -8,34 +8,28 @@
 #include "WebButtons.h"
 #include "Temperature.h"
 #include "AirQuality.h"
+#include "Vibration.h"
+#include "Sound.h"
 
-const char *wifiName = "FuturistikBarat";
-const char *password = "H4f1dzGen";
+// with the Vibration pins (INMP441: SCK, WS, SD)
+const int SerialClock = 10;
+const int WorldSelect = 11;
+const int SerialData = 3;
+
+// 10-14 is free
 
 // Vibration
-const int VibrationSensorAddressI2C = 0x69;
-int VibrationData = 0;
+const int VibrationSensorAddressI2C = 0x68;
+float VibrationData = 0;
+float VibrationDataDivided = 0;
 
-#define VibrationSDA 21
-#define VibrationSCL 47
+const int X = 0x12;
+const int Y = 0x14;
+const int Z = 0x16;
 
-#define X 0x12
-#define Y 0x14
-#define Z 0x16
-
-int ReadAxis(int reg) {
-  Wire.beginTransmission(VibrationSensorAddressI2C);
-  Wire.write(reg);
-  Wire.endTransmission(false);
-  Wire.requestFrom(VibrationSensorAddressI2C, 2);
-
-  if (Wire.available() < 2) return 0;
-
-  int low = Wire.read();
-  int high = Wire.read();
-
-  return (int16_t)((high << 8) | low);
-}
+// Cables for sda and scl of the vibration thing
+const int VibrationSDA = 38;
+const int VibrationSCL = 39;
 
 //LED
 #define LED_PIN 48
@@ -48,12 +42,12 @@ const int Servo = 5;
 const int Temperature = 15;
 const int TemperatureData = 16;
 
-const int Vibration = 20;
+const int Vibration = 40;
 
 const int Air = 15;
 const int AirData = 4;
 
-const int Sound = 15;
+const int Sound = 17;
 const int SoundData = 0;
 
 bool StateTemperature = false;
@@ -61,20 +55,86 @@ bool StateVibration = false;
 bool StateAir = false;
 bool StateSound = false;
 
+String KeyPressed = ""; 
+
+void KeyInput() {
+  server.on("/Key", HTTP_GET, [](AsyncWebServerRequest *request) {
+    if (request->hasParam("value") && request->hasParam("state")) {
+      String Key = request->getParam("value")->value();
+      bool pressed = request->getParam("state")->value() == "1";
+
+      KeyPressed = Key + (pressed ? "Pressed" : "Released");  
+    }
+    WalkingInput();
+    request->send(200, "text/plain", "ok");
+  });
+}
+
+void WalkingInput() {
+  if (KeyPressed == "wPressed") {
+    WalkForward();
+  } else if (KeyPressed == "aPressed"){
+    WalkLeft();
+  } else if (KeyPressed == "sPressed"){
+    WalkBackward();
+  } else if (KeyPressed == "dPressed"){
+    WalkRight();
+  } else if (KeyPressed == "qPressed"){
+    TurnLeft();
+  } else if (KeyPressed == "ePressed"){
+    TurnRight();
+  } else if (
+    KeyPressed == "wReleased" || 
+    KeyPressed == "aReleased" || 
+    KeyPressed == "sReleased" || 
+    KeyPressed == "dReleased" ||
+    KeyPressed == "qReleased" ||
+    KeyPressed == "eReleased" 
+    ) {
+    StayStill();
+  }
+}
+
+void WalkForward(){
+  Serial.println("Walking forward...");
+}
+
+void WalkLeft(){
+  Serial.println("Walking left...");
+}
+
+void WalkRight(){
+  Serial.println("Walking right...");
+}
+
+void WalkBackward(){
+  Serial.println("Walking backward...");
+}
+
+void TurnLeft(){
+  Serial.println("Turning left...");
+}
+
+void TurnRight(){
+  Serial.println("Turning right...");
+}
+
+void StayStill(){
+  Serial.println("Standing still...");
+}
+
+
 void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  Wire.begin(VibrationSDA, VibrationSCL);
-
-  Wire.beginTransmission(VibrationSensorAddressI2C);
-  Wire.write(0x7E);
-  Wire.write(0x11);
-  Wire.endTransmission();
-
-  delay(100);
+  KeyInput();
 
   pinMode(Vibration, OUTPUT);
+  digitalWrite(Vibration, HIGH);
+
+  delay(5000);
+
   digitalWrite(Vibration, LOW);
 
   pinMode(Air, OUTPUT);
@@ -108,10 +168,12 @@ void setup() {
 
   led.show();
 
-  //Air
+  //Air.h
   SendAirData();
 
-  //Temperature
+  delay(2000);
+
+  //Temperature.h
   pinMode(Temperature, OUTPUT);
   digitalWrite(Temperature, LOW);
 
@@ -119,33 +181,26 @@ void setup() {
   SendTemperatureData();
 
   delay(2000);
+
+  // Vibration.h
+  // VibrationSensorInitialization();
+  SendVibrationData();
+
+  // Sound.h
+  // InitializeSound();
+  SendSoundData();
+
+
+  delay(2000);
 }
 
 void loop() {
-  static int x = 0, y = 0, z = 0;
-
-  int NewX = ReadAxis(X);
-  int NewY = ReadAxis(Y);
-  int NewZ = ReadAxis(Z);
-
-  VibrationData = ((NewX - x) * (NewX - x) + (NewY - y) * (NewY - y) + (NewZ - z) * (NewZ - z)) / (NewX + NewY + NewZ);
-
-  x = NewX;
-  y = NewY;
-  z = NewZ;
-
-  // Vibration data is raw indicator of movement or vibration
-
-  // if (VibrationData >= 0 && VibrationData <= 120) {
-  //   VibrationData = 0;
-  // }
-
-  Serial.println(VibrationData);
-
-  delay(500);
-
+  int ReadAxis(int reg);
+  
   TemperatureReading();
   AirReading();
+  VibrationReading();
+  SoundReading();
 
   //Serial.print("ymin:");
   //Serial.print(-100);
