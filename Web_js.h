@@ -16,6 +16,13 @@ document.addEventListener("keyup", function (event) {
   SendKey(event.key.toLowerCase(), 0);
 });
 
+// Stop the robot if the page loses focus while a walking key is held down
+window.addEventListener("blur", function () {
+  ["w", "a", "s", "d", "q", "e"].forEach(function (key) {
+    SendKey(key, 0);
+  });
+});
+
 /**********************************************************************/
 
 async function LoudNoise() {

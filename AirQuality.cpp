@@ -10,12 +10,12 @@ void AirReading() {
   airValue = analogRead(AirData);
 
   Serial.print("Air Quality: ");
-
-  if (airValue <= 1000) {
-    airValue = 0;
-  }
-
   Serial.println(airValue);
+
+  // Re-enable later once you know your clean-air baseline:
+  // if (airValue <= 1000) {
+  //   airValue = 0;
+  // }
 
   delay(200);
 }

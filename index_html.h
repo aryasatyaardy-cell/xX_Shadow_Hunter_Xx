@@ -51,6 +51,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
         <div class="DynamicText">
           <h1><span class="Bold">Temperature:</span> <span id="TemperatureValue">∅</span>°C</h1>
+          <h1><span class="Bold">Humidity:</span> <span id="HumidityValue">∅</span>%</h1>
         </div>
       </div>
 

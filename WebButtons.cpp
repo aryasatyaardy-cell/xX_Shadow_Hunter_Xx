@@ -80,6 +80,10 @@ void VibrationOff() {
 void AirOn() {
   server.on("/AirStateOn", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(Air, HIGH);
+    delay(1000);
+    pinMode(7, OUTPUT);
+    digitalWrite(7, HIGH);
+
     StateAir = true;
     request->send(200, "text/plain", "Assessing air quality");
 
@@ -95,6 +99,9 @@ void AirOn() {
 void AirOff() {
   server.on("/AirStateOff", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(Air, LOW);
+        delay(1000);
+    pinMode(7, OUTPUT);
+    digitalWrite(7, LOW);
     StateAir = false;
     request->send(200, "text/plain", "Stop assessing air quality");
 

@@ -264,6 +264,11 @@ body {
   font-size: 10px;
 }
 
+.Control .DynamicText h1 {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
 .LogLine {
   text-align: left;
   font-size: 15px;

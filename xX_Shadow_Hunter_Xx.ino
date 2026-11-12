@@ -10,6 +10,7 @@
 #include "AirQuality.h"
 #include "Vibration.h"
 #include "Sound.h"
+#include "Walking.h"
 
 // with the Vibration pins (INMP441: SCK, WS, SD)
 const int SerialClock = 10;
@@ -44,7 +45,7 @@ const int TemperatureData = 16;
 
 const int Vibration = 40;
 
-const int Air = 15;
+const int Air = 6;
 const int AirData = 4;
 
 const int Sound = 17;
@@ -55,72 +56,25 @@ bool StateVibration = false;
 bool StateAir = false;
 bool StateSound = false;
 
-String KeyPressed = ""; 
-
+// Keys sent by the web page: w a s d = walk, q e = turn.
+// The page sends state 1 when a key goes down and 0 when it is released.
 void KeyInput() {
   server.on("/Key", HTTP_GET, [](AsyncWebServerRequest *request) {
     if (request->hasParam("value") && request->hasParam("state")) {
       String Key = request->getParam("value")->value();
       bool pressed = request->getParam("state")->value() == "1";
 
-      KeyPressed = Key + (pressed ? "Pressed" : "Released");  
+      if (Key.length() == 1) {
+        if (pressed) {
+          WalkingKeyPressed(Key.charAt(0));
+        } else {
+          WalkingKeyReleased(Key.charAt(0));
+        }
+      }
     }
-    WalkingInput();
+
     request->send(200, "text/plain", "ok");
   });
-}
-
-void WalkingInput() {
-  if (KeyPressed == "wPressed") {
-    WalkForward();
-  } else if (KeyPressed == "aPressed"){
-    WalkLeft();
-  } else if (KeyPressed == "sPressed"){
-    WalkBackward();
-  } else if (KeyPressed == "dPressed"){
-    WalkRight();
-  } else if (KeyPressed == "qPressed"){
-    TurnLeft();
-  } else if (KeyPressed == "ePressed"){
-    TurnRight();
-  } else if (
-    KeyPressed == "wReleased" || 
-    KeyPressed == "aReleased" || 
-    KeyPressed == "sReleased" || 
-    KeyPressed == "dReleased" ||
-    KeyPressed == "qReleased" ||
-    KeyPressed == "eReleased" 
-    ) {
-    StayStill();
-  }
-}
-
-void WalkForward(){
-  Serial.println("Walking forward...");
-}
-
-void WalkLeft(){
-  Serial.println("Walking left...");
-}
-
-void WalkRight(){
-  Serial.println("Walking right...");
-}
-
-void WalkBackward(){
-  Serial.println("Walking backward...");
-}
-
-void TurnLeft(){
-  Serial.println("Turning left...");
-}
-
-void TurnRight(){
-  Serial.println("Turning right...");
-}
-
-void StayStill(){
-  Serial.println("Standing still...");
 }
 
 
@@ -192,6 +146,9 @@ void setup() {
 
 
   delay(2000);
+
+  // Servo driver + walking (runs in its own task)
+  WalkingBegin();
 }
 
 void loop() {
