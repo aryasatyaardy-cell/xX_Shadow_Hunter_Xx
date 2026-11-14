@@ -12,10 +12,9 @@ void AirReading() {
   Serial.print("Air Quality: ");
   Serial.println(airValue);
 
-  // Re-enable later once you know your clean-air baseline:
-  // if (airValue <= 1000) {
-  //   airValue = 0;
-  // }
+  if (airValue >= 240) {
+    airValue = (airValue + 300) * (-1);
+  }
 
   delay(200);
 }

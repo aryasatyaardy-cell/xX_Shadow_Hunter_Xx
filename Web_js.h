@@ -23,6 +23,32 @@ window.addEventListener("blur", function () {
   });
 });
 
+
+async function HumidityUpdate() {
+    if (!TemperatureState) return;
+
+    const HumidityDisplay =
+        document.getElementById("HumidityValue");
+
+    try {
+        const response = await fetch('/Humidity_Data');
+
+        if (!response.ok) {
+            throw new Error("Humidity request failed");
+        }
+
+        const Humidity = await response.text();
+
+        HumidityDisplay.textContent = Humidity;
+
+    } catch (err) {
+        console.error("Humidity error:", err);
+    }
+}
+
+setInterval(HumidityUpdate, 2000);
+
+
 /**********************************************************************/
 
 async function LoudNoise() {
@@ -297,8 +323,8 @@ $(document).ready(function () {
         animation: false,
         scales: {
           y: {
-            min: -5000,
-            max: 5000,
+            min: -800,
+            max: 350,
             grid: { color: 'rgba(255, 255, 255, 0.1)' }
           },
           x: {
